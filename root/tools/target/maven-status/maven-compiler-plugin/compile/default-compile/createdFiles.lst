@@ -1,0 +1,11 @@
+cn\ghl\others\Picture.class
+cn\ghl\others\Book.class
+cn\ghl\tools\json\MappingConfig.class
+cn\ghl\tools\json\JsonToMapUtil.class
+cn\ghl\tools\json\ObjectToMapUtil.class
+cn\ghl\tools\mapper\BeanMapper.class
+cn\ghl\tools\json\JsonTools.class
+cn\ghl\tools\json\ObjectBind.class
+cn\ghl\others\Person.class
+cn\ghl\tools\json\ObjectTranslate.class
+cn\ghl\tools\json\MyObjectUtil.class
