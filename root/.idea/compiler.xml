@@ -11,8 +11,9 @@
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
+      <module name="parent" target="1.5" />
       <module name="root" target="1.5" />
-      <module name="swingdemo" target="1.5" />
+      <module name="swingdemo" target="1.8" />
       <module name="tools" target="1.8" />
     </bytecodeTargetLevel>
   </component>
