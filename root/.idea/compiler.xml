@@ -7,13 +7,14 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="swingdemo" />
+        <module name="tester" />
         <module name="tools" />
       </profile>
     </annotationProcessing>
-    <bytecodeTargetLevel>
-      <module name="parent" target="1.5" />
+    <bytecodeTargetLevel target="1.8">
       <module name="root" target="1.5" />
       <module name="swingdemo" target="1.8" />
+      <module name="tester" target="1.8" />
       <module name="tools" target="1.8" />
     </bytecodeTargetLevel>
   </component>

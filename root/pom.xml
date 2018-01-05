@@ -12,6 +12,7 @@
   <modules>
     <module>tools</module>
     <module>swingdemo</module>
+    <module>tester</module>
   </modules>
 
   <properties>
