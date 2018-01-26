@@ -64,6 +64,12 @@
       </dependency>
 
       <dependency>
+        <groupId>commons-configuration</groupId>
+        <artifactId>commons-configuration</artifactId>
+        <version>1.10</version>
+      </dependency>
+
+      <dependency>
         <groupId>commons-beanutils</groupId>
         <artifactId>commons-beanutils</artifactId>
         <version>1.8.3</version>
