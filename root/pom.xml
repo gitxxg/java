@@ -13,9 +13,9 @@
     <module>tools</module>
     <module>swingdemo</module>
     <module>tester</module>
-    <module>dubbox/provider</module>
-    <module>dubbox/consumer</module>
-    <module>dubbox/rest</module>
+    <module>dubbo/provider</module>
+    <module>dubbo/consumer</module>
+    <module>dubbo/rest</module>
   </modules>
 
   <properties>

@@ -2,12 +2,13 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/dubbox/consumer/consumer.iml" filepath="$PROJECT_DIR$/dubbox/consumer/consumer.iml" />
+      <module fileurl="file://$PROJECT_DIR$/dubbo/consumer/consumer.iml" filepath="$PROJECT_DIR$/dubbo/consumer/consumer.iml" />
       <module fileurl="file://$PROJECT_DIR$/dubbo/dubborest.iml" filepath="$PROJECT_DIR$/dubbo/dubborest.iml" />
+      <module fileurl="file://$PROJECT_DIR$/dubbo/helloword.iml" filepath="$PROJECT_DIR$/dubbo/helloword.iml" />
       <module fileurl="file://$PROJECT_DIR$/dubbo/target/tomcat/work/Tomcat/localhost/localhost.iml" filepath="$PROJECT_DIR$/dubbo/target/tomcat/work/Tomcat/localhost/localhost.iml" />
       <module fileurl="file://$PROJECT_DIR$/dubbo/src/main/main.iml" filepath="$PROJECT_DIR$/dubbo/src/main/main.iml" />
-      <module fileurl="file://$PROJECT_DIR$/dubbox/provider/provider.iml" filepath="$PROJECT_DIR$/dubbox/provider/provider.iml" />
-      <module fileurl="file://$PROJECT_DIR$/dubbox/rest/rest.iml" filepath="$PROJECT_DIR$/dubbox/rest/rest.iml" />
+      <module fileurl="file://$PROJECT_DIR$/dubbo/provider/provider.iml" filepath="$PROJECT_DIR$/dubbo/provider/provider.iml" />
+      <module fileurl="file://$PROJECT_DIR$/dubbo/rest/rest.iml" filepath="$PROJECT_DIR$/dubbo/rest/rest.iml" />
       <module fileurl="file://$PROJECT_DIR$/root.iml" filepath="$PROJECT_DIR$/root.iml" />
       <module fileurl="file://$PROJECT_DIR$/swingdemo/swingdemo.iml" filepath="$PROJECT_DIR$/swingdemo/swingdemo.iml" />
       <module fileurl="file://$PROJECT_DIR$/tester/tester.iml" filepath="$PROJECT_DIR$/tester/tester.iml" />

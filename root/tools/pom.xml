@@ -24,10 +24,6 @@
   </build>
 
   <dependencies>
-    <dependency>
-      <groupId>com.google.code.gson</groupId>
-      <artifactId>gson</artifactId>
-    </dependency>
 
     <dependency>
       <groupId>commons-beanutils</groupId>

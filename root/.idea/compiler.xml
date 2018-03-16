@@ -24,6 +24,8 @@
       <module name="dubbo.provider (1)" target="1.5" />
       <module name="dubborest" target="1.5" />
       <module name="dubbox" target="1.5" />
+      <module name="hello" target="1.5" />
+      <module name="helloword" target="1.5" />
       <module name="provider" target="1.5" />
       <module name="rest" target="1.5" />
       <module name="root" target="1.5" />
