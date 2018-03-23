@@ -13,9 +13,10 @@
     <module>tools</module>
     <module>swingdemo</module>
     <module>tester</module>
-    <module>dubbo/provider</module>
-    <module>dubbo/consumer</module>
-    <module>dubbo/rest</module>
+    <module>dubbo</module>
+    <module>myssm</module>
+    <module>sbc</module>
+    <module>sbc</module>
   </modules>
 
   <properties>

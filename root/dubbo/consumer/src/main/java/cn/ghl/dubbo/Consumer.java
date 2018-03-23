@@ -18,7 +18,7 @@ public class Consumer {
     private static Logger LOG = LoggerFactory.getLogger(Consumer.class);
 
     public static void main(String[] args) {
-        ApplicationContext applicationContext = new ClassPathXmlApplicationContext("classpath:spring-config/*.xml");
+        ApplicationContext applicationContext = new ClassPathXmlApplicationContext("classpath:spring-config-config/*.xml");
         DubboService dubboService = (DubboService) applicationContext.getBean("dubboService");
         LOG.debug("==================================");
         Response response = dubboService.getMessage("123");
