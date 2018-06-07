@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<Objects>
+  <Object Name="com.ericsson.csp.tsc.tds.data.TDSDeviceStatus" Method="write">
+    <Field>timestamp{x.getTime()}=timestamp{}</Field>
+    <Field>device.id{}=device.id{}</Field>
+    <Field>device.type{}=device.type{}</Field>
+    <Field>device.diagnostic[com.ericsson.csp.tsc.entity.ECUDiagnostic]=device.diagnostic[]</Field>
+  </Object>
+  <Object Name="com.ericsson.csp.tsc.entity.ECUDiagnostic" Method="write">
+    <Field>ecuID{}=ecuID{}</Field>
+    <Field>diagnosticResult{x.getCode()}=diagnosticResult{new com.ericsson.csp.tsc.entity.enums.HealthStatus(toInt(x))}</Field>
+    <Field>exceptionCode{}=exceptionCode{toInt(x)}</Field>
+    <Field>dtcs[com.ericsson.csp.tsc.entity.DiagnosticTroubleCode]=dtcs[]</Field>
+  </Object>
+</Objects>

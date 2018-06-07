@@ -1,0 +1,11 @@
+main.java.cn.ghl.tools.json.Person|PersonToJson<
+age{toInt(x+1)}=age{toInt(x-1)}
+name{}=name{}
+books[main.java.cn.ghl.tools.json.Book]=books[]
+>
+
+main.java.cn.ghl.tools.json.Book|BookToJson<
+price{}=price{}
+bookName{}=bookName{}
+createTime{x.getTime()}=createTime{toDate(x)}
+>

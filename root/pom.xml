@@ -15,8 +15,11 @@
     <module>tester</module>
     <module>dubbo</module>
     <module>myssm</module>
-    <module>sbc</module>
-    <module>sbc</module>
+    <module>sbsc</module>
+    <module>keycloak-demo</module>
+    <module>hello-docker</module>
+    <module>kafka</module>
+    <module>web</module>
   </modules>
 
   <properties>

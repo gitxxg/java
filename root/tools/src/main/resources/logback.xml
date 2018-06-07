@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<configuration scan="true">
+	<appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<file>/opt/ericsson/csp/logs/tsc-remote-status.log</file>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<FileNamePattern>/opt/ericsson/csp/history-logs/tsc-remote-status-%d{yyyy-MM-dd}.%i.gz
+			</FileNamePattern>
+			<MaxHistory>60</MaxHistory>
+			<timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+				<maxFileSize>512MB</maxFileSize>
+			</timeBasedFileNamingAndTriggeringPolicy>
+		</rollingPolicy>
+		<layout class="ch.qos.logback.classic.PatternLayout">
+			<Pattern>[%d{yyyy-MM-dd HH:mm:ss.SSS}] [TSC_REMOTE_STATUS] [%thread] [%level] [%logger{36}] %msg%n</Pattern>
+		</layout>
+	</appender>
+	<!-- 控制台输出 -->
+	<appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+		<layout class="ch.qos.logback.classic.PatternLayout">
+			<Pattern>[%d{yyyy-MM-dd HH:mm:ss.SSS}] [TSC_REMOTE_STATUS] [%thread] [%level] [%logger{36}] %msg%n</Pattern>
+		</layout>
+	</appender>
+
+	<logger name="main.java.cn.ghl">
+		<level value="DEBUG" />
+		<appender-ref ref="STDOUT" />
+	</logger>
+
+</configuration>

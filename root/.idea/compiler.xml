@@ -6,33 +6,56 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
+        <module name="config-client" />
+        <module name="config-server" />
         <module name="consumer" />
         <module name="dubbo.provider" />
         <module name="dubbo.provider (1)" />
         <module name="dubborest" />
+        <module name="eureka-server" />
+        <module name="hello-docker" />
+        <module name="kafka" />
+        <module name="keycloak-demo" />
+        <module name="myssm" />
         <module name="provider" />
         <module name="rest" />
+        <module name="sbsc-api" />
+        <module name="sbsc-feign" />
+        <module name="sbsc-server" />
         <module name="swingdemo" />
         <module name="tester" />
         <module name="tools" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel target="1.8">
+      <module name="config-client" target="1.5" />
+      <module name="config-server" target="1.5" />
       <module name="consumer" target="1.5" />
       <module name="dubbo" target="1.5" />
       <module name="dubbo.provider" target="1.5" />
       <module name="dubbo.provider (1)" target="1.5" />
       <module name="dubborest" target="1.5" />
       <module name="dubbox" target="1.5" />
+      <module name="eureka-server" target="1.5" />
       <module name="hello" target="1.5" />
+      <module name="hello-docker" target="1.5" />
       <module name="helloword" target="1.5" />
+      <module name="kafka" target="1.7" />
+      <module name="keycloak-demo" target="1.5" />
+      <module name="myssm" target="1.5" />
       <module name="provider" target="1.5" />
       <module name="rest" target="1.5" />
       <module name="root" target="1.5" />
+      <module name="sbc" target="1.5" />
+      <module name="sbc-user" target="1.5" />
+      <module name="sbsc" target="1.5" />
+      <module name="sbsc-api" target="1.5" />
+      <module name="sbsc-feign" target="1.5" />
+      <module name="sbsc-server" target="1.5" />
       <module name="swingdemo" target="1.8" />
       <module name="tester" target="1.8" />
       <module name="tools" target="1.8" />
-      <module name="web" target="1.5" />
+      <module name="web" target="1.8" />
     </bytecodeTargetLevel>
   </component>
 </project>
