@@ -1,26 +1,19 @@
 package cn.ghl.web.controller;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
+import cn.ghl.web.tools.WebContextClient;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import org.apache.http.HttpHost;
-import org.apache.http.HttpResponse;
-import org.apache.http.HttpStatus;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.config.RequestConfig;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.util.EntityUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
@@ -35,68 +28,100 @@ public class WebStockController {
 
     private static final String FORMAT = "%s|";
 
+    @Autowired
+    private WebContextClient webContextClient;
+
     public static void main(String[] args) throws IOException {
         WebStockController webStockController = new WebStockController();
-        String url = null;
-        // 主要财务指标按报告期
-        url = "http://emweb.securities.eastmoney.com/NewFinanceAnalysis/MainTargetAjax?ctype=4&type=0&code=sz000651";
-        // 主要财务指标按年度
-        url = "http://emweb.securities.eastmoney.com/NewFinanceAnalysis/MainTargetAjax?ctype=4&type=1&code=sz000651";
-        String html = webStockController.getWebContext(url);
-        logger.info("json：{}", html);
-        List<Map<String, String>> list = new ArrayList<>();
-        Gson gson = new GsonBuilder().create();
-        list = gson.fromJson(html, list.getClass());
-        logger.info("list：{}", list);
-        Map<String, String> target = webStockController.getTargetMap();
-
-        for (String key : target.keySet()) {
-            StringBuffer date = new StringBuffer();
-            date.append(String.format(FORMAT, target.get(key)));
-            for (Map<String, String> map : list) {
-                date.append(String.format(FORMAT, map.get(key)));
-            }
-            System.out.println(date.toString());
-        }
+        System.out.println(webStockController.getStockInfo("sz000651"));
     }
 
-    @RequestMapping(value = "/web/stock/context", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public String getWebContext(@RequestParam(required = true) String uri) {
+
+    @RequestMapping(value = "/web/stock/context/{stockName}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseBody
+    public String getStockInfo(@PathVariable("stockName") String stockName) {
+
+        // 主要财务指标按报告期
+        // Major financial indicators by reporting period
+        // "http://emweb.securities.eastmoney.com/NewFinanceAnalysis/MainTargetAjax?ctype=4&type=0&code=sz000651"
+        String url = "http://emweb.securities.eastmoney.com/NewFinanceAnalysis/MainTargetAjax?ctype=4&type=0&code=";
+        url += stockName;
+
+        // get stock finance analysis from web
+        String html = webContextClient.getWebContext(url);
+        logger.info("json：{}", html);
+
+        // pares json to object
+        List<Map<String, String>> stockInfo = new ArrayList<>();
+        ObjectMapper objectMapper = new ObjectMapper();
         try {
-            HttpClient client = new DefaultHttpClient();
-            //发送get请求
-            HttpGet httpget = new HttpGet(uri);
-            //设置代理IP
-            HttpHost proxy = new HttpHost("127.0.0.1", 80);
-            //设置超时时间
-            RequestConfig config = RequestConfig.custom().setProxy(proxy).setConnectTimeout(5000).setConnectionRequestTimeout(5000)
-                .setSocketTimeout(5000).build();
-            // 伪装成浏览器
-            httpget.addHeader("User-Agent",
-                "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67.0.3396.79 Safari/537.36");
-
-            httpget.setConfig(config);
-            HttpResponse response = client.execute(httpget);
-
-            /**请求发送成功，并得到响应**/
-            if (response.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
-                /**读取服务器返回过来的json字符串数据**/
-                String strResult = EntityUtils.toString(response.getEntity(), "utf-8");
-
-                return strResult;
-            }
+            stockInfo = objectMapper.readValue(html, stockInfo.getClass());
         } catch (IOException e) {
             e.printStackTrace();
+            logger.error("", e);
         }
+        logger.info("list：{}", stockInfo);
 
-        return null;
+        // format data
+        // headline|item|item|item|item|item|item|item|item|
+        List<String[]> targetList = getMainTargetList();
+        StringBuffer ret = new StringBuffer();
+        for (String[] target : targetList) {
+            StringBuffer date = new StringBuffer();
+            // headline
+            date.append(String.format(FORMAT, target[1]));
+            for (Map<String, String> stockMap : stockInfo) {
+                // items A|B|C|D|E|...
+                date.append(String.format(FORMAT, stockMap.get(target[0])));
+            }
+            ret.append(date.toString() + "\n");
+            System.out.println(date.toString());
+        }
+        return ret.toString();
     }
 
-    private Map<String, String> getTargetMap() {
-        Map<String, String> target = new HashMap<>();
-        target.put("date", "指标\\日期");
-        target.put("jbmgsy", "基本每股收益(元)");
-        target.put("yyzsr", "营业总收入");
-        return target;
+    private List<String[]> getMainTargetList() {
+        List<String[]> list = new ArrayList<>();
+        list.add(new String[]{"date", "每股指标"});
+        list.add(new String[]{"jbmgsy", "基本每股收益(元)"});
+        list.add(new String[]{"kfmgsy", "扣非每股收益(元)"});
+        list.add(new String[]{"xsmgsy", "稀释每股收益(元)"});
+        list.add(new String[]{"mgjzc", "每股净资产(元)"});
+        list.add(new String[]{"mggjj", "每股公积金(元)"});
+        list.add(new String[]{"mgwfply", "每股未分配利润(元)"});
+        list.add(new String[]{"mgjyxjl", "每股经营现金流(元)"});
+        list.add(new String[]{"date", "成长能力指标"});
+        list.add(new String[]{"yyzsr", "营业总收入(元)"});
+        list.add(new String[]{"mlr", "毛利润(元)"});
+        list.add(new String[]{"gsjlr", "归属净利润(元)"});
+        list.add(new String[]{"kfjlr", "扣非净利润(元)"});
+        list.add(new String[]{"yyzsrtbzz", "营业总收入同比增长(%)"});
+        list.add(new String[]{"gsjlrtbzz", "归属净利润同比增长(%)"});
+        list.add(new String[]{"kfjlrtbzz", "扣非净利润同比增长(%)"});
+        list.add(new String[]{"yyzsrgdhbzz", "营业总收入滚动环比增长(%)"});
+        list.add(new String[]{"gsjlrgdhbzz", "归属净利润滚动环比增长(%)"});
+        list.add(new String[]{"kfjlrgdhbzz", "扣非净利润滚动环比增长(%)"});
+        list.add(new String[]{"date", "盈利能力指标"});
+        list.add(new String[]{"jqjzcsyl", "加权净资产收益率(%)"});
+        list.add(new String[]{"tbjzcsyl", "摊薄净资产收益率(%)"});
+        list.add(new String[]{"tbzzcsyl", "摊薄总资产收益率(%)"});
+        list.add(new String[]{"mll", "毛利率(%)"});
+        list.add(new String[]{"jll", "净利率(%)"});
+        list.add(new String[]{"sjsl", "实际税率(%)"});
+        list.add(new String[]{"date", "盈利质量指标"});
+        list.add(new String[]{"yskyysr", "预收款/营业收入"});
+        list.add(new String[]{"xsxjlyysr", "销售现金流/营业收入"});
+        list.add(new String[]{"jyxjlyysr", "经营现金流/营业收入"});
+        list.add(new String[]{"date", "运营能力指标"});
+        list.add(new String[]{"zzczzy", "总资产周转率(次)"});
+        list.add(new String[]{"yszkzzts", "应收账款周转天数(天)"});
+        list.add(new String[]{"chzzts", "存货周转天数(天)"});
+        list.add(new String[]{"date", "财务风险指标"});
+        list.add(new String[]{"zcfzl", "资产负债率(%)"});
+        list.add(new String[]{"ldzczfz", "流动负债/总负债(%)"});
+        list.add(new String[]{"ldbl", "流动比率"});
+        list.add(new String[]{"sdbl", "速动比率"});
+        return list;
     }
+
 }
