@@ -8,17 +8,17 @@
         <outputRelativeToContentRoot value="true" />
         <module name="config-client" />
         <module name="config-server" />
-        <module name="consumer" />
         <module name="dubbo.provider" />
         <module name="dubbo.provider (1)" />
         <module name="dubborest" />
         <module name="eureka-server" />
         <module name="hello-docker" />
+        <module name="just-log" />
         <module name="kafka" />
         <module name="keycloak-demo" />
         <module name="myssm" />
-        <module name="provider" />
-        <module name="rest" />
+        <module name="parent" />
+        <module name="postgresql" />
         <module name="sbsc-api" />
         <module name="sbsc-feign" />
         <module name="sbsc-server" />
@@ -36,13 +36,18 @@
       <module name="dubbo.provider (1)" target="1.5" />
       <module name="dubborest" target="1.5" />
       <module name="dubbox" target="1.5" />
+      <module name="elastic" target="1.5" />
       <module name="eureka-server" target="1.5" />
       <module name="hello" target="1.5" />
       <module name="hello-docker" target="1.5" />
       <module name="helloword" target="1.5" />
+      <module name="just-log" target="1.5" />
       <module name="kafka" target="1.7" />
       <module name="keycloak-demo" target="1.5" />
       <module name="myssm" target="1.5" />
+      <module name="parent" target="1.7" />
+      <module name="postgres-ssl" target="1.5" />
+      <module name="postgresql" target="1.5" />
       <module name="provider" target="1.5" />
       <module name="rest" target="1.5" />
       <module name="root" target="1.5" />
@@ -52,6 +57,7 @@
       <module name="sbsc-api" target="1.5" />
       <module name="sbsc-feign" target="1.5" />
       <module name="sbsc-server" target="1.5" />
+      <module name="springboot" target="1.8" />
       <module name="swingdemo" target="1.8" />
       <module name="tester" target="1.8" />
       <module name="tools" target="1.8" />

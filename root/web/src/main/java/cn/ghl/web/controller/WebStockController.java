@@ -1,11 +1,16 @@
 package cn.ghl.web.controller;
 
+import cn.ghl.web.entity.MainTarget;
+import cn.ghl.web.service.MainTargetService;
+import cn.ghl.web.tools.JacksonUtil;
 import cn.ghl.web.tools.WebContextClient;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import org.apache.commons.beanutils.BeanUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,11 +36,8 @@ public class WebStockController {
     @Autowired
     private WebContextClient webContextClient;
 
-    public static void main(String[] args) throws IOException {
-        WebStockController webStockController = new WebStockController();
-        System.out.println(webStockController.getStockInfo("sz000651"));
-    }
-
+    @Autowired
+    private MainTargetService mainTargetService;
 
     @RequestMapping(value = "/web/stock/context/{stockName}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
@@ -66,18 +68,42 @@ public class WebStockController {
         // headline|item|item|item|item|item|item|item|item|
         List<String[]> targetList = getMainTargetList();
         StringBuffer ret = new StringBuffer();
+        StringBuffer date = new StringBuffer();
+        // header
         for (String[] target : targetList) {
-            StringBuffer date = new StringBuffer();
-            // headline
             date.append(String.format(FORMAT, target[1]));
-            for (Map<String, String> stockMap : stockInfo) {
-                // items A|B|C|D|E|...
+        }
+        date.append("\n");
+        for (Map<String, String> stockMap : stockInfo) {
+            // items A|B|C|D|E|...
+
+            for (String[] target : targetList) {
                 date.append(String.format(FORMAT, stockMap.get(target[0])));
             }
-            ret.append(date.toString() + "\n");
-            System.out.println(date.toString());
+            date.append("\n");
+            /*
+            try {
+                saveStock(stockName, stockMap);
+            } catch (InvocationTargetException e) {
+                e.printStackTrace();
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+            }
+            */
         }
+        logger.info("\n{}", date.toString());
         return ret.toString();
+    }
+
+    private void saveStock(String stockName, Map<String, String> stockMap) throws InvocationTargetException, IllegalAccessException {
+        MainTarget mainTarget = new MainTarget();
+        BeanUtils.setProperty(mainTarget, "name", stockName);
+        for (String key : stockMap.keySet()) {
+            BeanUtils.setProperty(mainTarget, key, stockMap.get(key));
+        }
+        logger.info("mainTarget json\n{}", JacksonUtil.toJson(mainTarget));
+        mainTargetService.save(mainTarget);
+
     }
 
     private List<String[]> getMainTargetList() {

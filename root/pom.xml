@@ -13,13 +13,15 @@
     <module>tools</module>
     <module>swingdemo</module>
     <module>tester</module>
-    <module>dubbo</module>
     <module>myssm</module>
     <module>sbsc</module>
     <module>keycloak-demo</module>
     <module>hello-docker</module>
     <module>kafka</module>
     <module>web</module>
+    <module>postgresql</module>
+    <module>just-log</module>
+    <module>parent</module>
   </modules>
 
   <properties>
@@ -34,15 +36,6 @@
       <version>4.12</version>
       <scope>test</scope>
     </dependency>
-
-    <!-- Log libs -->
-    <!--
-    <dependency>
-      <groupId>org.slf4j</groupId>
-      <artifactId>slf4j-api</artifactId>
-      <version>1.7.25</version>
-    </dependency>
-    -->
 
     <dependency>
       <groupId>commons-logging</groupId>
@@ -265,5 +258,6 @@
 
     </dependencies>
   </dependencyManagement>
+
 
 </project>

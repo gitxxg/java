@@ -4,18 +4,14 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/sbsc/config-client/config-client.iml" filepath="$PROJECT_DIR$/sbsc/config-client/config-client.iml" />
       <module fileurl="file://$PROJECT_DIR$/sbsc/config-server/config-server.iml" filepath="$PROJECT_DIR$/sbsc/config-server/config-server.iml" />
-      <module fileurl="file://$PROJECT_DIR$/dubbo/consumer/consumer.iml" filepath="$PROJECT_DIR$/dubbo/consumer/consumer.iml" />
-      <module fileurl="file://$PROJECT_DIR$/dubbo/dubborest.iml" filepath="$PROJECT_DIR$/dubbo/dubborest.iml" />
       <module fileurl="file://$PROJECT_DIR$/sbsc/eureka-server/eureka-server.iml" filepath="$PROJECT_DIR$/sbsc/eureka-server/eureka-server.iml" />
       <module fileurl="file://$PROJECT_DIR$/hello-docker/hello-docker.iml" filepath="$PROJECT_DIR$/hello-docker/hello-docker.iml" />
-      <module fileurl="file://$PROJECT_DIR$/dubbo/helloword.iml" filepath="$PROJECT_DIR$/dubbo/helloword.iml" />
+      <module fileurl="file://$PROJECT_DIR$/just-log/just-log.iml" filepath="$PROJECT_DIR$/just-log/just-log.iml" />
       <module fileurl="file://$PROJECT_DIR$/kafka/kafka.iml" filepath="$PROJECT_DIR$/kafka/kafka.iml" />
       <module fileurl="file://$PROJECT_DIR$/keycloak-demo/keycloak-demo.iml" filepath="$PROJECT_DIR$/keycloak-demo/keycloak-demo.iml" />
-      <module fileurl="file://$PROJECT_DIR$/dubbo/target/tomcat/work/Tomcat/localhost/localhost.iml" filepath="$PROJECT_DIR$/dubbo/target/tomcat/work/Tomcat/localhost/localhost.iml" />
-      <module fileurl="file://$PROJECT_DIR$/dubbo/src/main/main.iml" filepath="$PROJECT_DIR$/dubbo/src/main/main.iml" />
       <module fileurl="file://$PROJECT_DIR$/myssm/myssm.iml" filepath="$PROJECT_DIR$/myssm/myssm.iml" />
-      <module fileurl="file://$PROJECT_DIR$/dubbo/provider/provider.iml" filepath="$PROJECT_DIR$/dubbo/provider/provider.iml" />
-      <module fileurl="file://$PROJECT_DIR$/dubbo/rest/rest.iml" filepath="$PROJECT_DIR$/dubbo/rest/rest.iml" />
+      <module fileurl="file://$PROJECT_DIR$/parent/parent.iml" filepath="$PROJECT_DIR$/parent/parent.iml" />
+      <module fileurl="file://$PROJECT_DIR$/postgresql/postgresql.iml" filepath="$PROJECT_DIR$/postgresql/postgresql.iml" />
       <module fileurl="file://$PROJECT_DIR$/root.iml" filepath="$PROJECT_DIR$/root.iml" />
       <module fileurl="file://$PROJECT_DIR$/sbsc/sbsc.iml" filepath="$PROJECT_DIR$/sbsc/sbsc.iml" />
       <module fileurl="file://$PROJECT_DIR$/sbsc/sbsc-api/sbsc-api.iml" filepath="$PROJECT_DIR$/sbsc/sbsc-api/sbsc-api.iml" />

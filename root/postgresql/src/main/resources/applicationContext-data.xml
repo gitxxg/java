@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xmlns:tx="http://www.springframework.org/schema/tx" xmlns:context="http://www.springframework.org/schema/context"
+  xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+    http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+    http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd">
+
+
+  <context:component-scan base-package="cn.ghl.postgresssl"/>
+
+  <!-- 加密解密工具 -->
+  <bean id="encryptTool" class="com.ericsson.csp.tsc.keytool.ConfigEncryptTool"/>
+
+  <!-- 对配置文件的加密项进行解密 -->
+  <bean id="configBean" class="com.ericsson.csp.tsc.keytool.EncryptablePropertyPlaceholderConfigurer">
+    <!-- 指定配置文件 -->
+    <property name="location" value="classpath:app.properties"/>
+    <!-- 加密解密工具 -->
+    <property name="encryptTool" ref="encryptTool"/>
+    <!-- 被加密的配置项 -->
+    <property name="encryptProps">
+      <list>
+        <value>postgresql-sslpassword</value>
+      </list>
+    </property>
+  </bean>
+
+  <bean id="propertyConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+    <property name="locations" value="classpath:app.properties"/>
+    <property name="fileEncoding" value="utf-8"/>
+  </bean>
+
+  <!-- CSP dataSource -->
+
+  <bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource" init-method="init" destroy-method="close">
+    <property name="driverClassName" value="${jdbc.driverClassName}"/>
+    <property name="url" value="${jdbc.url}"/>
+    <property name="username" value="${jdbc.username}"/>
+    <property name="password" value="${jdbc.password}"/>
+
+    <property name="maxActive" value="200"/>
+    <property name="initialSize" value="5"/>
+    <property name="maxWait" value="60000"/>
+    <property name="useUnfairLock" value="true"/>
+    <property name="minIdle" value="1"/>
+
+    <property name="removeAbandoned" value="false"/>
+    <property name="removeAbandonedTimeout" value="300"/>
+    <property name="logAbandoned" value="false"/>
+
+    <property name="timeBetweenEvictionRunsMillis" value="3000"/>
+    <property name="minEvictableIdleTimeMillis" value="300000"/>
+
+    <property name="validationQuery" value="select version();"/>
+    <property name="testWhileIdle" value="true"/>
+    <property name="testOnBorrow" value="false"/>
+    <property name="testOnReturn" value="false"/>
+    <property name="filters" value="config"/>
+    <property name="connectionProperties" value="config.decrypt=false"/>
+  </bean>
+
+  <bean id="stat-filter" class="com.alibaba.druid.filter.stat.StatFilter">
+    <property name="mergeSql" value="true"/>
+    <property name="slowSqlMillis" value="10000"/>
+    <property name="logSlowSql" value="true"/>
+  </bean>
+
+  <bean id="sessionFactory" class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
+    <property name="dataSource" ref="dataSource"/>
+    <property name="annotatedClasses">
+      <list>
+        <value>cn.ghl.postgresssl.dao.entity.CspValue</value>
+      </list>
+    </property>
+    <property name="mappingResources">
+      <list>
+        <!--
+        <value>hibernate/TscVehicleProfile.hbm.xml</value>
+        <value>hibernate/TscUserVehicle.hbm.xml</value>
+        <value>hibernate/TscCspSignal.hbm.xml</value>
+        <value>hibernate/TscSignalValidity.hbm.xml</value>
+        <value>hibernate/TscSignalCorrectionFormula.hbm.xml</value>
+        -->
+      </list>
+    </property>
+    <property name="hibernateProperties">
+      <props>
+        <prop key="hibernate.dialect">org.hibernate.dialect.PostgreSQL82Dialect</prop>
+        <prop key="hibernate.hbm2ddl.auto">none</prop>
+        <prop key="hibernate.show_sql">false</prop>
+        <prop key="hibernate.format_sql">true</prop>
+        <prop key="hibernate.use_sql_comments">false</prop>
+        <prop key="hibernate.max_fetch_depth">2</prop>
+        <prop key="hibernate.jdbc.batch_size">100</prop>
+        <prop key="hibernate.order_inserts">true</prop>
+        <prop key="hibernate.query.substitutions">true 1, false 0</prop>
+        <prop key="hibernate.connection.SetBigStringTryClob">true</prop>
+        <prop key="javax.persistence.validation.mode">none</prop>
+
+        <prop key="hibernate.current_session_context_class">
+          org.springframework.orm.hibernate4.SpringSessionContext
+        </prop>
+
+        <!-- close cache
+        <prop key="hibernate.cache.use_second_level_cache">false</prop>
+        <prop key="hibernate.generate_statistics">false</prop>
+        <prop key="hibernate.cache.use_query_cache">false</prop>
+        <prop key="hibernate.cache.region.factory_class">
+            org.hibernate.cache.ehcache.SingletonEhCacheRegionFactory
+        </prop>
+        -->
+
+      </props>
+    </property>
+  </bean>
+
+  <bean id="transactionManager" class="org.springframework.orm.hibernate4.HibernateTransactionManager">
+    <property name="sessionFactory" ref="sessionFactory"/>
+  </bean>
+  <tx:annotation-driven transaction-manager="transactionManager"/>
+
+
+  <bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
+    <property name="dataSource" ref="dataSource"/>
+  </bean>
+
+  <!-- CSP dataSource end -->
+
+
+</beans>

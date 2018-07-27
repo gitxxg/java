@@ -1,0 +1,88 @@
+{
+  "request": {
+    "headers": {
+      "x-consumer-client-id": "newapp",
+      "postman-token": "e775c6f5-fdaa-492a-b641-a25e3d84ed7d",
+      "x-consumer-id": "zyexshu1",
+      "x-forwarded-for": "10.0.4.4",
+      "accept": "*/*",
+      "authorization": "Bearer xxxx",
+      "x-real-ip": "10.0.4.4",
+      "apcera-continuum": "HTTP",
+      "continuum-context": "0da883be-989f-b4da-da11-2c92e7977587",
+      "host": "gateway.restful.cvm.demo.apcera.acarbrand.com",
+      "x-anonymous-consumer": "true",
+      "connection": "close",
+      "cache-control": "no-cache",
+      "accept-encoding": "gzip, deflate",
+      "x-consumer-custom-id": "zyexshu1",
+      "user-agent": "PostmanRuntime/7.1.5"
+    },
+    "size": "1612",
+    "method": "GET",
+    "querystring": {
+    },
+    "uri": "/petstore/1",
+    "request_uri": "http://gateway.restful.cvm.demo.apcera.acarbrand.com:8000/petstore/1"
+  },
+  "tries": [
+    {
+      "port": 80,
+      "balancer_latency": 0,
+      "ip": "23.22.16.221"
+    }
+  ],
+  "latencies": {
+    "request": 163,
+    "proxy": 163,
+    "kong": 0
+  },
+  "message": "hello",
+  "type": "kong",
+  "@timestamp": "2018-07-12T09:37:35.866Z",
+  "port": 34730,
+  "response": {
+    "headers": {
+      "date": "Sun, 03 Jun 2018 06:51:28 GMT",
+      "access-control-allow-origin": "*",
+      "server": "Jetty(9.2.9.v20150224)",
+      "x-kong-upstream-latency": "163",
+      "transfer-encoding": "chunked",
+      "access-control-allow-headers": "Content-Type, api_key, Authorization",
+      "x-kong-proxy-latency": "0",
+      "content-type": "application/json",
+      "connection": "close",
+      "access-control-allow-methods": "GET, POST, DELETE, PUT",
+      "via": "kong/0.11.1"
+    },
+    "size": "543",
+    "status": 500
+  },
+  "@version": "1",
+  "host": "10.0.102.9",
+  "started_at": 1528008688166,
+  "client_ip": "10.0.101.4",
+  "api": {
+    "upstream_send_timeout": 60000,
+    "https_only": false,
+    "upstream_url": "http://petstore.swagger.io/v2/pet",
+    "created_at": 1527739084093,
+    "preserve_host": false,
+    "http_if_terminated": false,
+    "uris": [
+      "/petstore"
+    ],
+    "upstream_connect_timeout": 60000,
+    "retries": 5,
+    "strip_uri": true,
+    "name": "api-speed",
+    "id": "cfa26034-6915-462a-a776-bf60b3079236",
+    "upstream_read_timeout": 60000
+  },
+  "es_index": "kong",
+  "consumer": {
+    "custom_id": "user-java",
+    "id": "zyexshu1",
+    "client_id": "app-android"
+  }
+}

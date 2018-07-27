@@ -1,0 +1,10 @@
+{
+  "@timestamp": "2018-07-12T06:30:07.878Z",
+  "userId": "user-python",
+  "type": "pubsub",
+  "apiName": "api-direction",
+  "@version": 1,
+  "method": "PUB",
+  "host": "192.168.83.1",
+  "appName": "app-iphone"
+}

@@ -11,7 +11,7 @@
 			</timeBasedFileNamingAndTriggeringPolicy>
 		</rollingPolicy>
 		<layout class="ch.qos.logback.classic.PatternLayout">
-			<Pattern>[%d{yyyy-MM-dd HH:mm:ss.SSS}] [TSC_REMOTE_STATUS] [%level] [%logger{36}] %msg%n</Pattern>
+			<Pattern>[%d{yyyy-MM-dd HH:mm:ss.SSS}] [TSC_REMOTE_STATUS] [%thread] [%level] [%logger{36}] %msg%n</Pattern>
 		</layout>
 	</appender>
 	<!-- 控制台输出 -->
