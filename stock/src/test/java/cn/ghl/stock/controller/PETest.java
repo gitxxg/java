@@ -29,21 +29,49 @@ public class PETest {
     private TestRestTemplate testRestTemplate;
 
     @Test
+    public void queryPEsOfYears() throws Exception {
+
+        String stockId = "002508";
+        String[] years = {"2016", "2017", "2018"};
+        for (String year : years) {
+            String url = "/pe/history/year"
+                + "?stockId="
+                + stockId  // stock
+                + "&year="
+                + year  // year
+                + "&interval=1";
+            Object obj = testRestTemplate.getForObject(url, Object.class);
+        }
+    }
+
+    @Test
+    public void queryPEsOfYear() throws Exception {
+
+        String url = "/pe/history/year"
+            + "?stockId="
+            + "002508"  // stock
+            + "&year="
+            + "2018"  // year
+            + "&interval=3";
+        Object obj = testRestTemplate.getForObject(url, Object.class);
+    }
+
+
+    @Test
     public void queryPEAnalytics() throws Exception {
         String url;
-        url = "/pe/history"
-            + "?stockId=002508&date="
-            + "2017-10-02";
-        Object obj = testRestTemplate.getForObject(url, Object.class);
-        LOG.info("res {}", objectMapper.writeValueAsString(obj));
-
-        List<String> dtList = DateUtils.getMaxDayOfWeeks("2016");
+        String jsn;
+        Object obj;
+        List<String> dtList = DateUtils.getMaxDayOfWeeks("2018");
         for (String date : dtList) {
             url = "/pe/history"
                 + "?stockId=002508&date="
                 + date;
             obj = testRestTemplate.getForObject(url, Object.class);
-            LOG.info("res {}", objectMapper.writeValueAsString(obj));
+            jsn = objectMapper.writeValueAsString(obj);
+            LOG.info("res {}", jsn);
+            jsn = jsn.substring(1, jsn.length() - 1);
+            LOG.info("res {}", jsn);
         }
     }
 
