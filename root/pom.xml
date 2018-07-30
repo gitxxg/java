@@ -21,6 +21,8 @@
     <module>web</module>
     <module>postgresql</module>
     <module>just-log</module>
+    <module>stock</module>
+    <module>springboot</module>
     <module>parent</module>
   </modules>
 

@@ -22,6 +22,7 @@
         <module name="sbsc-api" />
         <module name="sbsc-feign" />
         <module name="sbsc-server" />
+        <module name="stock" />
         <module name="swingdemo" />
         <module name="tester" />
         <module name="tools" />
@@ -58,6 +59,7 @@
       <module name="sbsc-feign" target="1.5" />
       <module name="sbsc-server" target="1.5" />
       <module name="springboot" target="1.8" />
+      <module name="stock" target="1.8" />
       <module name="swingdemo" target="1.8" />
       <module name="tester" target="1.8" />
       <module name="tools" target="1.8" />

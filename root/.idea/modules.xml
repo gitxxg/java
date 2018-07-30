@@ -17,6 +17,7 @@
       <module fileurl="file://$PROJECT_DIR$/sbsc/sbsc-api/sbsc-api.iml" filepath="$PROJECT_DIR$/sbsc/sbsc-api/sbsc-api.iml" />
       <module fileurl="file://$PROJECT_DIR$/sbsc/sbsc-feign/sbsc-feign.iml" filepath="$PROJECT_DIR$/sbsc/sbsc-feign/sbsc-feign.iml" />
       <module fileurl="file://$PROJECT_DIR$/sbsc/sbsc-server/sbsc-server.iml" filepath="$PROJECT_DIR$/sbsc/sbsc-server/sbsc-server.iml" />
+      <module fileurl="file://$PROJECT_DIR$/stock/stock.iml" filepath="$PROJECT_DIR$/stock/stock.iml" />
       <module fileurl="file://$PROJECT_DIR$/swingdemo/swingdemo.iml" filepath="$PROJECT_DIR$/swingdemo/swingdemo.iml" />
       <module fileurl="file://$PROJECT_DIR$/tester/tester.iml" filepath="$PROJECT_DIR$/tester/tester.iml" />
       <module fileurl="file://$PROJECT_DIR$/tools/tools.iml" filepath="$PROJECT_DIR$/tools/tools.iml" />
