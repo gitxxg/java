@@ -7,16 +7,15 @@ import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Map;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -53,112 +52,85 @@ public class PE {
         @ApiParam(name = "stock", value = "The id of the stock")
         @RequestParam(required = true) String stockId,
 
-        @ApiParam(name = "date", value = "The date of query: 2017-09-29 or 2017-09 or 2017-09-29")
-        @RequestParam(required = true) String date) {
+        @ApiParam(name = "lastdate", value = "The lastdate of query")
+        @RequestParam(required = true) String lastdate) {
 
-        //String req = "http://www.szse.cn/api/report/ShowReport/data?SHOWTYPE=JSON&CATALOGID=1815_stock&TABKEY=tab1&txtDMorJC=002508&txtBeginDate=2017-09-29&txtEndDate=2017-09-29&radioClass=00%2C20%2C30&txtSite=all&random=0.9481951323835971";
-        String req = "http://www.szse.cn/api/report/ShowReport/data?SHOWTYPE=JSON&CATALOGID=1815_stock&TABKEY=tab1&txtDMorJC="
-            + stockId
-            + "&txtBeginDate="
-            + date
-            + "&txtEndDate="
-            + date
-            + "&radioClass=00%2C20%2C30&txtSite=all&random=0.9481951323835971";
-        return restTemplate.getForEntity(req, String.class);
-    }
+        String url = "https://www.touzid.com/index.php?/s_company/ajax/fw/";
 
-    @ApiOperation(value = "Get pub-sub api analytics of application")
-    @ApiResponses({
-        @ApiResponse(code = 200, message = "pub-sub api analytics"),
-        @ApiResponse(code = 500, message = "Internal Server Error")
-    })
-    @RequestMapping(value = "/history/year", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<String> queryPEsOfYear(
+        /*
+        "{"
+        + " \"symbol\": \"sz000418\", "
+        + " \"lastdate\": \"2018-07-30\", "
+        + " \"tableFields\": [\"d_pe_ttm\", "
+        + " \"market_value\", "
+        + " \"price_n\", "
+        + " \"price_adj\"] "
+        + "}";
+        */
 
-        @ApiParam(name = "stockId", value = "The id of the stock")
-        @RequestParam(required = true) String stockId,
+        String reqJson = "{"
+            + " \"symbol\": \"%s\", "
+            + " \"lastdate\": \"%s\", "
+            + " \"tableFields\": [\"d_pe_ttm\", "
+            + " \"market_value\", "
+            + " \"price_n\", "
+            + " \"price_adj\"] "
+            + "}";
 
-        @ApiParam(name = "year", value = "The date of query: 2017-09-29 or 2017-09 or 2017-09-29")
-        @RequestParam(required = true) String year,
+        reqJson = String.format(reqJson, stockId, lastdate);
 
-        @ApiParam(name = "interval", value = "The interval of query month: 1, 3")
-        @RequestParam(required = false) Integer interval) throws IOException {
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        HttpEntity<String> entity = new HttpEntity<>(reqJson, headers);
 
-        if (interval == null) {
-            interval = 1;
-        } else if ("1,3".indexOf("" + interval) < 0) {
-            return new ResponseEntity<String>(HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+        LOG.info("post: {} \n {}", url, reqJson);
 
-        //SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-        Calendar cal = new GregorianCalendar();
-        int y = NumberUtils.createInteger(year);
-        for (int m = 1; m <= 12; m++) {
-            if ((m % interval) != 0) {
-                continue;
-            }
-            //设置年份
-            cal.set(y, m - 1, 1);
-            //获取某月最大天数
-            int lastDay = cal.getActualMaximum(Calendar.DATE);
-            //月末
-            String lastDayOfMonth = String.format("%04d-%02d-%02d", y, m, lastDay);
-
-            // 报告期时间不能大于当前日期
-            Calendar now = Calendar.getInstance();
-            String currentDate = format.format(now.getTime());
-            if (lastDayOfMonth.compareToIgnoreCase(currentDate) > 0) {
-                LOG.info("{} is bigger than {}", lastDayOfMonth, currentDate);
-                break;
-            }
-
-            // 查询月末数据
-            Map map = dataOfEndMonth(stockId, y, m, lastDay);
-            //LOG.info("map {}", map);
-            //LOG.info("lastDayOfMonth {}, peMaxDayOfMonth {}, ss {}, syl1 {}", lastDayOfMonth, peMaxDayOfMonth, map.get("ss"), map.get("syl1"));
-            LOG.info("{},{},{}", lastDayOfMonth, map.get("ss"), map.get("syl1"));
-        }
-
-        return null;
-    }
-
-    private String queryPE(String stockId, String date) {
-        String req = "http://www.szse.cn/api/report/ShowReport/data?SHOWTYPE=JSON&CATALOGID=1815_stock&TABKEY=tab1&txtDMorJC="
-            + stockId
-            + "&txtBeginDate="
-            + date
-            + "&txtEndDate="
-            + date
-            + "&radioClass=00%2C20%2C30&txtSite=all&random=0.9481951323835971";
-        ResponseEntity<String> res = restTemplate.getForEntity(req, String.class);
-        return res.getBody();
-    }
-
-    private Map dataOfEndMonth(String stockId, int year, int month, int lastDay) {
-        String peMaxDayOfMonth;
-        String res;
-        Map map = null;
-        List list = null;
-        do {
-            // 月末没有数据，可能是遇到节假日，需要往前查询
-            peMaxDayOfMonth = String.format("%04d-%02d-%02d", year, month, lastDay);
-            //LOG.info("maxDateOfMonth {}", maxDateOfMonth);
-            res = queryPE(stockId, peMaxDayOfMonth);
-            res = res.substring(1, res.length() - 1);
-            try {
-                map = JsonMapUtils.objectMapper.readValue(res, Map.class);
-                // "data": [{...}]
-                list = (List) map.get("data");
-                if (list != null && !list.isEmpty()) {
-                    break;
+        String res = restTemplate.postForObject(url, entity, String.class);
+        LOG.info("res {}", res);
+        //Pattern pattern = Pattern.compile("[0-9]{4}-[0][3|6|9]-[0-9]{2}");
+        //Matcher matcher;
+        try {
+            Map map = JsonMapUtils.objectMapper.readValue(res, Map.class);
+            //LOG.info("errno {}", map.get("errno"));
+            List<Map<String, Object>> itemList = (List<Map<String, Object>>) map.get("rsm");
+            // 动态PE
+            float dpe = 0;
+            // 前复权
+            float price = 0;
+            // 计数
+            int num = 0;
+            //
+            String month = "";
+            String year = "";
+            for (Map<String, Object> item : itemList) {
+                String date = (String) item.get("date");
+                //LOG.info("date {}", date);
+                String[] ymd = date.split("-");
+                // 按季度输出
+                if ("03|06|09|12".contains(ymd[1])) {
+                    //LOG.info(">>> date {}", date);
+                    year = ymd[0];
+                    month = ymd[1];
+                    dpe += NumberUtils.createFloat((String) JsonMapUtils.getJsonMap(item, "items.d_pe_ttm"));
+                    price += NumberUtils.createFloat((String) JsonMapUtils.getJsonMap(item, "items.price_adj"));
+                    num++;
+                } else if (StringUtils.isNotBlank(month)) {
+                    //LOG.info("{}-{} dpe {}", ymd[0], month, dpe / num);
+                    //LOG.info("{}-{} price {}", ymd[0], month, price / num);
+                    //LOG.info("{}-{} {} {}", year, month, dpe / num, price / num);
+                    // 月份, 月平均PE, 月平均价格
+                    // 2018-06, 28.265661, 69.868
+                    System.out.println(year + "-" + month + ", " + dpe / num + ", " + price / num);
+                    year = "";
+                    month = "";
+                    dpe = 0;
+                    price = 0;
+                    num = 0;
                 }
-            } catch (Exception e) {
-                e.printStackTrace();
             }
-
-        } while (--lastDay > 0);
-
-        return (Map) list.get(0);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 }
