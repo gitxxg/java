@@ -9,6 +9,7 @@ import io.swagger.annotations.ApiResponses;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
+import java.util.Stack;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.slf4j.Logger;
@@ -102,6 +103,7 @@ public class PE {
             //
             String month = "";
             String year = "";
+            Stack<String> stack = new Stack<String>();
             for (Map<String, Object> item : itemList) {
                 String date = (String) item.get("date");
                 //LOG.info("date {}", date);
@@ -120,6 +122,7 @@ public class PE {
                     //LOG.info("{}-{} {} {}", year, month, dpe / num, price / num);
                     // 月份, 月平均PE, 月平均价格
                     // 2018-06, 28.265661, 69.868
+                    stack.push(year + "-" + month + ", " + dpe / num + ", " + price / num);
                     System.out.println(year + "-" + month + ", " + dpe / num + ", " + price / num);
                     year = "";
                     month = "";
@@ -127,6 +130,10 @@ public class PE {
                     price = 0;
                     num = 0;
                 }
+            }
+            System.out.println("-------------------");
+            while (!stack.empty()) {
+                System.out.println(stack.pop());
             }
         } catch (IOException e) {
             e.printStackTrace();

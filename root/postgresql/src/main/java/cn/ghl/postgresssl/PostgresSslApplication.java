@@ -2,6 +2,7 @@ package cn.ghl.postgresssl;
 
 import cn.ghl.postgresssl.dao.CspValueDAO;
 import cn.ghl.postgresssl.dao.entity.CspValue;
+import com.alibaba.druid.pool.DruidDataSource;
 import java.util.List;
 import java.util.Map;
 import javax.transaction.Transactional;
@@ -19,14 +20,14 @@ public class PostgresSslApplication {
     public void testJdbc() {
         ApplicationContext ac = new ClassPathXmlApplicationContext("applicationContext-*.xml");
         System.out.println("---------------- JdbcTemplate ----------------");
+        DruidDataSource dataSource = (DruidDataSource) ac.getBean("dataSource");
+        System.out.println("url: " + dataSource.getUrl());
         JdbcTemplate jdbcTemplate = (JdbcTemplate) ac.getBean("jdbcTemplate");
         System.out.println(jdbcTemplate.toString());
         List<Map<String, Object>> mapList = jdbcTemplate.queryForList("select * from csp_value");
         for (Map<String, Object> map : mapList) {
             System.out.println(map.toString());
         }
-
-
     }
 
     public void testHibernate() {
